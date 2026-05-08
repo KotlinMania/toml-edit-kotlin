@@ -34,7 +34,7 @@ This repo contains:
 
 ```kotlin
 dependencies {
-    implementation("io.github.kotlinmania:toml-edit-kotlin:0.1.0-SNAPSHOT")
+    implementation("io.github.kotlinmania:toml-edit-kotlin:0.1.0")
 }
 ```
 
