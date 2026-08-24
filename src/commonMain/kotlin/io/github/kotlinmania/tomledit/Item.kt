@@ -11,7 +11,15 @@ public sealed class Item {
 
     public open fun isValue(): Boolean = this is ValueItem
 
+    public open fun isTable(): Boolean = this is TableItem
+
+    public open fun isArrayOfTables(): Boolean = this is ArrayOfTablesItem
+
     public open fun asValue(): Value? = (this as? ValueItem)?.value
+
+    public open fun asTable(): Table? = (this as? TableItem)?.table
+
+    public open fun asArrayOfTables(): ArrayOfTables? = (this as? ArrayOfTablesItem)?.arrayOfTables
 
     public open fun asStr(): String? = asValue()?.asStr()
 
@@ -20,6 +28,67 @@ public sealed class Item {
     public open fun asFloat(): Double? = asValue()?.asFloat()
 
     public open fun asBoolean(): Boolean? = asValue()?.asBoolean()
+
+    public open fun asArray(): Array? = asValue()?.asArray()
+
+    public open fun asInlineTable(): InlineTable? = asValue()?.asInlineTable()
+
+    public open fun orInsert(item: Item): Item = if (isNone()) item else this
+
+    public open fun makeValue(): Value =
+        when (this) {
+            is ValueItem -> value
+            is TableItem -> {
+                val inline = table.intoInlineTable()
+                Value.InlineTableValue(inline)
+            }
+            is ArrayOfTablesItem -> {
+                val arr = arrayOfTables.intoArray()
+                Value.ArrayValue(arr)
+            }
+            is None -> Value.from("")
+        }
+
+    public open fun fmt() {
+        when (this) {
+            is ValueItem -> value.fmt()
+            is TableItem -> table.fmt()
+            is ArrayOfTablesItem -> arrayOfTables.fmt()
+            is None -> {}
+        }
+    }
+
+    public open val span: Span?
+        get() =
+            when (this) {
+                is ValueItem -> value.span
+                is TableItem -> table.span
+                is ArrayOfTablesItem -> arrayOfTables.span
+                is None -> null
+            }
+
+    public open fun despan(input: String) {
+        when (this) {
+            is ValueItem -> value.despan(input)
+            is TableItem -> table.despan(input)
+            is ArrayOfTablesItem -> arrayOfTables.despan(input)
+            is None -> {}
+        }
+    }
+
+    public open operator fun get(key: String): Item? =
+        when (this) {
+            is TableItem -> table[key]
+            is ValueItem -> value.asInlineTable()?.get(key)
+            else -> null
+        }
+
+    public open operator fun get(index: Int): Item? =
+        when (this) {
+            is ArrayOfTablesItem -> arrayOfTables.get(index)?.let { TableItem(it) }
+            is ValueItem -> value.asArray()?.get(index)?.let { ValueItem(it) }
+            else -> null
+        }
 
     public object None : Item() {
         override fun typeName(): String = "none"
@@ -32,22 +101,13 @@ public sealed class Item {
     }
 
     public class TableItem(
-        public val entries: MutableMap<String, Item> = mutableMapOf(),
+        public val table: Table = Table(),
     ) : Item() {
         override fun typeName(): String = "table"
-
-        public operator fun get(key: String): Item? = entries[key]
-
-        public operator fun set(
-            key: String,
-            item: Item,
-        ) {
-            entries[key] = item
-        }
     }
 
     public class ArrayOfTablesItem(
-        public val tables: MutableList<TableItem> = mutableListOf(),
+        public val arrayOfTables: ArrayOfTables = ArrayOfTables(),
     ) : Item() {
         override fun typeName(): String = "array of tables"
     }
@@ -63,6 +123,8 @@ public sealed class Item {
 
         public fun value(v: Value): Item = ValueItem(v)
 
-        public fun table(): Item = TableItem()
+        public fun table(): Item = TableItem(Table.new())
+
+        public fun arrayOfTables(): Item = ArrayOfTablesItem(ArrayOfTables.new())
     }
 }

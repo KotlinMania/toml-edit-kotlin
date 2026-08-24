@@ -8,15 +8,15 @@ import kotlin.test.assertNull
 class ErrorTest {
     @Test
     fun customError() {
-        val err = TomlError.custom("invalid syntax", 0..5)
-        assertEquals("invalid syntax", err.message())
-        assertEquals(0..5, err.span())
+        val err = TomlError.custom("invalid syntax", Span(0, 5))
+        assertEquals("invalid syntax", err.message)
+        assertEquals(Span(0, 5), err.span)
     }
 
     @Test
     fun emptySpan() {
         val err = TomlError.custom("unexpected eof")
-        assertEquals("unexpected eof", err.message())
-        assertNull(err.span())
+        assertEquals("unexpected eof", err.message)
+        assertNull(err.span)
     }
 }
