@@ -14,13 +14,8 @@ public class Key(
 
     public fun asRepr(): Repr? = repr
 
-    public fun leafDecor(): Decor = leafDecor
-
-    public fun dottedDecor(): Decor = dottedDecor
-
-    public fun leafDecorMut(): Decor = leafDecor
-
-    public fun dottedDecorMut(): Decor = dottedDecor
+    public val span: Span?
+        get() = repr?.span
 
     public fun fmt() {
         repr = null

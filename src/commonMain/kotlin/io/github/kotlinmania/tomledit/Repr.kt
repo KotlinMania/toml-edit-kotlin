@@ -9,7 +9,8 @@ public class Repr(
 ) {
     public fun asRaw(): RawString = rawValue
 
-    public fun span(): IntRange? = rawValue.span()
+    public val span: Span?
+        get() = rawValue.span
 
     public companion object {
         public fun newUnchecked(raw: RawString): Repr = Repr(raw)
@@ -53,26 +54,87 @@ public class Decor(
 /**
  * A scalar TOML value's logical value and its representation.
  */
-public class Formatted<T>(
-    public var value: T,
+internal class Formatted<T>(
+    var value: T,
+    var repr: Repr? = null,
+    var decor: Decor = Decor(),
+) {
+    fun fmt() {
+        repr = null
+    }
+
+    val span: Span?
+        get() = repr?.span
+
+    companion object {
+        fun <T> new(value: T): Formatted<T> = Formatted(value)
+    }
+}
+
+public class FormattedString(
+    public var value: String,
     public var repr: Repr? = null,
     public var decor: Decor = Decor(),
 ) {
-    public fun value(): T = value
-
-    public fun asRepr(): Repr? = repr
-
-    public fun decor(): Decor = decor
-
-    public fun decorMut(): Decor = decor
-
     public fun fmt() {
         repr = null
     }
 
-    public fun span(): IntRange? = repr?.span()
+    public val span: Span?
+        get() = repr?.span
 
     public companion object {
-        public fun <T> new(value: T): Formatted<T> = Formatted(value)
+        public fun new(value: String): FormattedString = FormattedString(value)
+    }
+}
+
+public class FormattedInteger(
+    public var value: Long,
+    public var repr: Repr? = null,
+    public var decor: Decor = Decor(),
+) {
+    public fun fmt() {
+        repr = null
+    }
+
+    public val span: Span?
+        get() = repr?.span
+
+    public companion object {
+        public fun new(value: Long): FormattedInteger = FormattedInteger(value)
+    }
+}
+
+public class FormattedFloat(
+    public var value: Double,
+    public var repr: Repr? = null,
+    public var decor: Decor = Decor(),
+) {
+    public fun fmt() {
+        repr = null
+    }
+
+    public val span: Span?
+        get() = repr?.span
+
+    public companion object {
+        public fun new(value: Double): FormattedFloat = FormattedFloat(value)
+    }
+}
+
+public class FormattedBoolean(
+    public var value: Boolean,
+    public var repr: Repr? = null,
+    public var decor: Decor = Decor(),
+) {
+    public fun fmt() {
+        repr = null
+    }
+
+    public val span: Span?
+        get() = repr?.span
+
+    public companion object {
+        public fun new(value: Boolean): FormattedBoolean = FormattedBoolean(value)
     }
 }

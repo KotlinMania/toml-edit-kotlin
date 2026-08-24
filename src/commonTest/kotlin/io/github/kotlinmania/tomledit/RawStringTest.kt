@@ -16,9 +16,9 @@ class RawStringTest {
 
     @Test
     fun spannedString() {
-        val s = RawString.withSpan(0..4)
+        val s = RawString.withSpan(Span(0, 5))
         assertNull(s.asStr())
-        assertEquals(0..4, s.span())
+        assertEquals(Span(0, 5), s.span)
         assertEquals("hello", s.toStr("hello world"))
         assertEquals("hello", s.toStrWithDefault("hello world", "default"))
     }

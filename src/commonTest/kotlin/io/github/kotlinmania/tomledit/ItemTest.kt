@@ -17,7 +17,7 @@ class ItemTest {
         assertEquals("foo", v.asStr())
 
         val t = Item.table() as Item.TableItem
-        t["bar"] = Item.value(42L)
+        t.table["bar"] = Item.value(42L)
         assertEquals("table", t.typeName())
         assertEquals(42L, t["bar"]?.asInteger())
     }

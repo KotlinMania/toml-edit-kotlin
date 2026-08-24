@@ -707,13 +707,35 @@ mavenPublishing {
 
 // Exact test lifecycle task. Without this, ./gradlew test is ambiguous between
 // Android test task names. This runs commonTest through the KMP allTests
-// lifecycle and adds the Android host + Swift Export parity tests.
+tasks.configureEach {
+    if (name.endsWith("GenerateSPMPackage")) {
+        doLast {
+            val spmDir =
+                layout.buildDirectory
+                    .dir("SPMPackage")
+                    .orNull
+                    ?.asFile
+            if (spmDir != null && spmDir.exists()) {
+                spmDir.walkTopDown().filter { it.name == "Package.swift" }.forEach { file ->
+                    val text = file.readText()
+                    if (!text.contains("platforms:")) {
+                        file.writeText(
+                            text.replaceFirst(
+                                Regex("""(let package = Package\s*\(\s*name:\s*"[^"]*",)"""),
+                                "$1\n    platforms: [.macOS(.v14)],",
+                            ),
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
 tasks.register("test") {
     group = "verification"
-    description = "Runs the commonTest-backed KMP suite, Android host tests, and Swift Export smoke test."
-    dependsOn("allTests")
-    dependsOn("testAndroidHostTest")
-    dependsOn("swiftExportSmokeTest")
+    description = "Alias for hostTests and swiftExportSmokeTest to satisfy standard test invocations."
+    dependsOn("hostTests", "swiftExportSmokeTest")
 }
 
 tasks.register("setupAndroidSdk") {
@@ -755,6 +777,7 @@ tasks.register("swiftExportSmokeTest") {
                 .dir("swift-test")
                 .get()
                 .asFile
+                .apply { mkdirs() }
                 .absolutePath
         execOperations
             .exec {
@@ -790,8 +813,8 @@ tasks.register("swiftExportSmokeTest") {
             if (!text.contains("platforms:")) {
                 generatedPackageSwift.writeText(
                     text.replaceFirst(
-                        Regex("(name:\\s*\"[^\"]*\",)"),
-                        "\$1\n    platforms: [.macOS(.v14)],",
+                        Regex("""(let package = Package\s*\(\s*name:\s*"[^"]*",)"""),
+                        "$1\n    platforms: [.macOS(.v14)],",
                     ),
                 )
             }

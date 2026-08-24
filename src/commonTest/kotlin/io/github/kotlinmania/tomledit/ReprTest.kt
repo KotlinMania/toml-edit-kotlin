@@ -25,11 +25,11 @@ class ReprTest {
     @Test
     fun formattedValue() {
         val fmt = Formatted.new(42L)
-        assertEquals(42L, fmt.value())
-        assertNull(fmt.asRepr())
+        assertEquals(42L, fmt.value)
+        assertNull(fmt.repr)
         fmt.repr = Repr.fromString("0x2a")
-        assertEquals("0x2a", fmt.asRepr()?.asRaw()?.asStr())
+        assertEquals("0x2a", fmt.repr?.asRaw()?.asStr())
         fmt.fmt()
-        assertNull(fmt.asRepr())
+        assertNull(fmt.repr)
     }
 }
