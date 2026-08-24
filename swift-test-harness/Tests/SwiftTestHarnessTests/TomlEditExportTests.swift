@@ -1,8 +1,7 @@
-#if canImport(Testing)
 import Testing
 import TomlEdit
 
-@Suite("TomlEdit Swift Export Smoke Tests")
+@Suite("TomlEdit Swift Export Suite")
 struct TomlEditExportTests {
     @Test("Swift module loads and basic assertion passes")
     func swiftModuleLoads() {
@@ -12,17 +11,4 @@ struct TomlEditExportTests {
         #expect(doc.asTable() != nil)
     }
 }
-#elseif canImport(XCTest)
-import XCTest
-import TomlEdit
-
-final class TomlEditExportTests: XCTestCase {
-    func testSwiftModuleLoads() throws {
-        let table = Table.Companion.shared.new()
-        XCTAssertTrue(table.isEmpty())
-        let doc = Document.Companion.shared.new()
-        XCTAssertNotNil(doc.asTable())
-    }
-}
-#endif
 
