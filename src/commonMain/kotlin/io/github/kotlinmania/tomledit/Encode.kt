@@ -7,6 +7,35 @@ public fun toTomlString(document: Document): String {
     return buf.toString()
 }
 
+public fun Key.toTomlString(): String {
+    val buf = StringBuilder()
+    encodeKey(this, buf)
+    return buf.toString()
+}
+
+public fun Value.toTomlString(): String {
+    val buf = StringBuilder()
+    encodeValue(this, buf)
+    return buf.toString()
+}
+
+public fun Item.toTomlString(): String {
+    return when (this) {
+        is Item.ValueItem -> value.toTomlString()
+        is Item.TableItem -> {
+            val doc = Document.new()
+            doc.asTable()?.let { t ->
+                for ((k, v) in table.items) {
+                    t[k] = v
+                }
+            }
+            doc.toTomlString()
+        }
+        else -> ""
+    }
+}
+
+
 public fun encodeDocument(document: Document, buf: StringBuilder) {
     val table = document.asTable() ?: return
     val tables = mutableListOf<TableEntry>()

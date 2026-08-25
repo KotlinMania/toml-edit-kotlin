@@ -23,4 +23,20 @@ class ValueTest {
         assertEquals(true, b.asBoolean())
         assertEquals("boolean", b.typeName())
     }
+
+    @Test
+    fun fromIterFormatting() {
+        val arr = Array()
+        arr.push("node")
+        arr.push("mouth")
+        val v = Value.ArrayValue(arr)
+        assertEquals("[\"node\", \"mouth\"]", v.toTomlString())
+    }
+
+    @Test
+    fun stringRoundtrip() {
+        val v = Value.from("hello")
+        assertEquals("\"hello\"", v.toTomlString())
+    }
 }
+

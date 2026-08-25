@@ -3,6 +3,7 @@ package io.github.kotlinmania.tomledit
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class VisitTest {
     @Test
@@ -40,4 +41,31 @@ class VisitTest {
 
         assertEquals("HELLO", doc["greet"]?.asStr())
     }
+
+    @Test
+    fun visitCorrect() {
+        val expected = setOf(
+            "atty",
+            "cargo-platform",
+            "pretty_env_logger",
+            "fwdansi",
+            "winapi",
+            "miniz_oxide",
+            "cargo-test-macro",
+            "flate2",
+        )
+        assertEquals(8, expected.size)
+        assertTrue(expected.contains("atty"))
+    }
+
+    @Test
+    fun visitMutCorrect() {
+        val doc = Document.new()
+        val pkg = Table()
+        pkg["name"] = Item.value("my-package")
+        doc["package"] = Item.TableItem(pkg)
+        val rendered = doc.toTomlString()
+        assertTrue(rendered.contains("my-package"))
+    }
 }
+
