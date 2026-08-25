@@ -21,4 +21,12 @@ class ItemTest {
         assertEquals("table", t.typeName())
         assertEquals(42L, t["bar"]?.asInteger())
     }
+
+    @Test
+    fun stringRoundtrip() {
+        val v = Item.value("hello")
+        val rendered = v.toTomlString()
+        assertEquals("\"hello\"", rendered)
+    }
 }
+

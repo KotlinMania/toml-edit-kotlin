@@ -37,4 +37,11 @@ class DocumentTest {
         assertTrue(rendered.contains("server = \"192.168.1.1\""))
         assertTrue(rendered.contains("port = 5432"))
     }
+
+    @Test
+    fun defaultRoundtrip() {
+        val doc = Document.new()
+        assertEquals("", doc.toTomlString())
+    }
 }
+
