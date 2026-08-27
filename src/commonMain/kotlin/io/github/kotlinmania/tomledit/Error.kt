@@ -44,4 +44,3 @@ public fun translatePosition(input: ByteArray, index: Int): Pair<Int, Int> {
     val column = (sliceStr.length - 1) + columnOffset
     return Pair(line, column)
 }
-

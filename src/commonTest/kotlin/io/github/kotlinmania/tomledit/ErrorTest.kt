@@ -84,4 +84,3 @@ class ErrorTest {
         assertEquals(Pair(1, 2), position)
     }
 }
-

@@ -39,4 +39,3 @@ class ValueTest {
         assertEquals("\"hello\"", v.toTomlString())
     }
 }
-

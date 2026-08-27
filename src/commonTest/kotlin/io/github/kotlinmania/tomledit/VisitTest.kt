@@ -44,16 +44,17 @@ class VisitTest {
 
     @Test
     fun visitCorrect() {
-        val expected = setOf(
-            "atty",
-            "cargo-platform",
-            "pretty_env_logger",
-            "fwdansi",
-            "winapi",
-            "miniz_oxide",
-            "cargo-test-macro",
-            "flate2",
-        )
+        val expected =
+            setOf(
+                "atty",
+                "cargo-platform",
+                "pretty_env_logger",
+                "fwdansi",
+                "winapi",
+                "miniz_oxide",
+                "cargo-test-macro",
+                "flate2",
+            )
         assertEquals(8, expected.size)
         assertTrue(expected.contains("atty"))
     }
@@ -68,4 +69,3 @@ class VisitTest {
         assertTrue(rendered.contains("my-package"))
     }
 }
-

@@ -19,8 +19,8 @@ public fun Value.toTomlString(): String {
     return buf.toString()
 }
 
-public fun Item.toTomlString(): String {
-    return when (this) {
+public fun Item.toTomlString(): String =
+    when (this) {
         is Item.ValueItem -> value.toTomlString()
         is Item.TableItem -> {
             val doc = Document.new()
@@ -33,8 +33,6 @@ public fun Item.toTomlString(): String {
         }
         else -> ""
     }
-}
-
 
 public fun encodeDocument(document: Document, buf: StringBuilder) {
     val table = document.asTable() ?: return
