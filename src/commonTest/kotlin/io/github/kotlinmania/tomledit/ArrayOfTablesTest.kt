@@ -1,4 +1,4 @@
-// port-lint: source array_of_tables.rs
+// port-lint: tests array_of_tables.rs
 package io.github.kotlinmania.tomledit
 
 import kotlin.test.Test

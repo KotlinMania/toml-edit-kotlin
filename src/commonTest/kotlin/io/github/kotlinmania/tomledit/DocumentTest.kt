@@ -1,4 +1,4 @@
-// port-lint: source document.rs
+// port-lint: tests document.rs
 package io.github.kotlinmania.tomledit
 
 import kotlin.test.Test
