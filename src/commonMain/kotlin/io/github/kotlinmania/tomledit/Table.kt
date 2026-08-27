@@ -1,4 +1,4 @@
-// port-lint: source toml_edit/src/table.rs
+// port-lint: source table.rs
 package io.github.kotlinmania.tomledit
 
 /**

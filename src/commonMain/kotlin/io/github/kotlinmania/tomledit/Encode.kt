@@ -1,4 +1,4 @@
-// port-lint: source toml_edit/src/encode.rs
+// port-lint: source encode.rs
 package io.github.kotlinmania.tomledit
 
 public fun toTomlString(document: Document): String {
