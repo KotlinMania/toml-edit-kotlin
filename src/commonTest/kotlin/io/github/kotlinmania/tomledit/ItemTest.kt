@@ -29,4 +29,3 @@ class ItemTest {
         assertEquals("\"hello\"", rendered)
     }
 }
-

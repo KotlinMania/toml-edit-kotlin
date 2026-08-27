@@ -44,4 +44,3 @@ class DocumentTest {
         assertEquals("", doc.toTomlString())
     }
 }
-

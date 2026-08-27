@@ -22,4 +22,3 @@ class KeyTest {
         assertEquals("hello", parsed[0].get())
     }
 }
-
