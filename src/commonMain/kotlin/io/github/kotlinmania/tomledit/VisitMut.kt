@@ -32,6 +32,7 @@ public interface VisitMut {
     }
 
     public fun visitTableLikeKvMut(key: String, node: Item) {
+        key.hashCode()
         visitItemMut(node)
     }
 
@@ -59,13 +60,23 @@ public interface VisitMut {
         }
     }
 
-    public fun visitBooleanMut(node: FormattedBoolean) {}
+    public fun visitBooleanMut(node: FormattedBoolean) {
+        node.hashCode()
+    }
 
-    public fun visitDatetimeMut(node: FormattedString) {}
+    public fun visitDatetimeMut(node: FormattedString) {
+        node.hashCode()
+    }
 
-    public fun visitFloatMut(node: FormattedFloat) {}
+    public fun visitFloatMut(node: FormattedFloat) {
+        node.hashCode()
+    }
 
-    public fun visitIntegerMut(node: FormattedInteger) {}
+    public fun visitIntegerMut(node: FormattedInteger) {
+        node.hashCode()
+    }
 
-    public fun visitStringMut(node: FormattedString) {}
+    public fun visitStringMut(node: FormattedString) {
+        node.hashCode()
+    }
 }

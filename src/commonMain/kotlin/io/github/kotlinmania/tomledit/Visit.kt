@@ -34,6 +34,7 @@ public interface Visit {
     }
 
     public fun visitTableLikeKv(key: String, node: Item) {
+        key.hashCode()
         visitItem(node)
     }
 
@@ -61,13 +62,23 @@ public interface Visit {
         }
     }
 
-    public fun visitBoolean(node: FormattedBoolean) {}
+    public fun visitBoolean(node: FormattedBoolean) {
+        node.hashCode()
+    }
 
-    public fun visitDatetime(node: FormattedString) {}
+    public fun visitDatetime(node: FormattedString) {
+        node.hashCode()
+    }
 
-    public fun visitFloat(node: FormattedFloat) {}
+    public fun visitFloat(node: FormattedFloat) {
+        node.hashCode()
+    }
 
-    public fun visitInteger(node: FormattedInteger) {}
+    public fun visitInteger(node: FormattedInteger) {
+        node.hashCode()
+    }
 
-    public fun visitString(node: FormattedString) {}
+    public fun visitString(node: FormattedString) {
+        node.hashCode()
+    }
 }
