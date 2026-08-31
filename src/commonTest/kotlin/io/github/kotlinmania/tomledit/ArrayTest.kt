@@ -1,4 +1,4 @@
-// port-lint: tests array.rs
+// port-lint: tests toml_edit/src/array.rs
 package io.github.kotlinmania.tomledit
 
 import kotlin.test.Test

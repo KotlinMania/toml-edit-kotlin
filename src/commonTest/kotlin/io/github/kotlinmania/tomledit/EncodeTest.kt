@@ -1,4 +1,4 @@
-// port-lint: tests encode.rs
+// port-lint: tests toml_edit/src/encode.rs
 package io.github.kotlinmania.tomledit
 
 import kotlin.test.Test

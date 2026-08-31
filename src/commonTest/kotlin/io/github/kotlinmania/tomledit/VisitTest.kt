@@ -1,4 +1,4 @@
-// port-lint: tests visit.rs
+// port-lint: tests toml_edit/src/visit.rs
 package io.github.kotlinmania.tomledit
 
 import kotlin.test.Test
