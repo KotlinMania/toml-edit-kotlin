@@ -1,4 +1,4 @@
-// port-lint: source key.rs
+// port-lint: source toml_edit/src/key.rs
 package io.github.kotlinmania.tomledit
 
 /**

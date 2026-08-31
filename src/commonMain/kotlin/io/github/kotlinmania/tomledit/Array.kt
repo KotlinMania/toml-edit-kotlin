@@ -1,4 +1,4 @@
-// port-lint: source array.rs
+// port-lint: source toml_edit/src/array.rs
 package io.github.kotlinmania.tomledit
 
 /**
