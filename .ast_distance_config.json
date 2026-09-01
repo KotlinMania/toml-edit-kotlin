@@ -2,7 +2,7 @@
   "type": "port",
   "name": "toml-edit-kotlin",
   "source": {
-    "path": "tmp",
+    "path": "tmp/toml_edit/src",
     "lang": "rust"
   },
   "target": {
