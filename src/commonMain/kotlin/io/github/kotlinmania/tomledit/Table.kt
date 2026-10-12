@@ -32,7 +32,9 @@ public class Table public constructor(
 
     public fun despan(input: String) {
         this.span = null
+        this.decor.despan(input)
         for ((key, value) in items) {
+            key.despan(input)
             value.despan(input)
         }
     }
@@ -148,6 +150,7 @@ public class Table public constructor(
                 value is Item.TableItem && value.table.dotted -> {
                     value.table.appendValues(path, values)
                 }
+
                 value is Item.ValueItem -> {
                     val innerVal = value.value
                     if (innerVal is Value.InlineTableValue && innerVal.inlineTable.dotted) {

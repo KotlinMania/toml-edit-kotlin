@@ -30,7 +30,8 @@ public class RawString(
     public fun asStr(): String? = explicit
 
     public fun toStr(input: String? = null): String {
-        if (explicit != null) return explicit!!
+        val exp = explicit
+        if (exp != null) return exp
         val s = span
         if (s != null && input != null && s.start >= 0 && s.end <= input.length && s.start <= s.end) {
             return input.substring(s.start, s.end)
@@ -42,7 +43,8 @@ public class RawString(
         input: String?,
         default: String,
     ): String {
-        if (explicit != null) return explicit!!
+        val exp = explicit
+        if (exp != null) return exp
         val s = span
         if (s != null && input != null && s.start >= 0 && s.end <= input.length && s.start <= s.end) {
             return input.substring(s.start, s.end)
@@ -51,8 +53,9 @@ public class RawString(
     }
 
     public fun despan(input: String) {
+        val exp = explicit
         val s = span
-        if (explicit == null && s != null) {
+        if (exp == null && s != null) {
             explicit =
                 if (s.start == s.end) {
                     ""
@@ -89,7 +92,7 @@ public class RawString(
 
     override fun hashCode(): Int = (explicit?.hashCode() ?: 0) * 31 + (span?.hashCode() ?: 0)
 
-    override fun toString(): String = explicit ?: (span?.let { "span($it)" } ?: "")
+    override fun toString(): String = explicit ?: span?.let { "span($it)" }.orEmpty()
 
     public companion object {
         public val EMPTY: RawString = RawString("")

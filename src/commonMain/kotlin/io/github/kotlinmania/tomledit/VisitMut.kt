@@ -13,9 +13,18 @@ public interface VisitMut {
     public fun visitItemMut(node: Item) {
         when (node) {
             is Item.None -> {}
-            is Item.ValueItem -> visitValueMut(node.value)
-            is Item.TableItem -> visitTableMut(node.table)
-            is Item.ArrayOfTablesItem -> visitArrayOfTablesMut(node.arrayOfTables)
+
+            is Item.ValueItem -> {
+                visitValueMut(node.value)
+            }
+
+            is Item.TableItem -> {
+                visitTableMut(node.table)
+            }
+
+            is Item.ArrayOfTablesItem -> {
+                visitArrayOfTablesMut(node.arrayOfTables)
+            }
         }
     }
 
