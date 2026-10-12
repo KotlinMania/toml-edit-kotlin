@@ -24,15 +24,16 @@ public data class Span(
  * Opaque string storage for raw TOML.
  */
 public class RawString(
-    private val explicit: String? = null,
-    public val span: Span? = null,
+    private var explicit: String? = null,
+    public var span: Span? = null,
 ) {
     public fun asStr(): String? = explicit
 
     public fun toStr(input: String? = null): String {
-        if (explicit != null) return explicit
-        if (span != null && input != null && span.start >= 0 && span.end <= input.length && span.start <= span.end) {
-            return input.substring(span.start, span.end)
+        if (explicit != null) return explicit!!
+        val s = span
+        if (s != null && input != null && s.start >= 0 && s.end <= input.length && s.start <= s.end) {
+            return input.substring(s.start, s.end)
         }
         return ""
     }
@@ -41,12 +42,54 @@ public class RawString(
         input: String?,
         default: String,
     ): String {
-        if (explicit != null) return explicit
-        if (span != null && input != null && span.start >= 0 && span.end <= input.length && span.start <= span.end) {
-            return input.substring(span.start, span.end)
+        if (explicit != null) return explicit!!
+        val s = span
+        if (s != null && input != null && s.start >= 0 && s.end <= input.length && s.start <= s.end) {
+            return input.substring(s.start, s.end)
         }
         return default
     }
+
+    public fun despan(input: String) {
+        val s = span
+        if (explicit == null && s != null) {
+            explicit =
+                if (s.start == s.end) {
+                    ""
+                } else if (s.start in 0..input.length && s.end in 0..input.length && s.start <= s.end) {
+                    input.substring(s.start, s.end)
+                } else {
+                    ""
+                }
+            span = null
+        }
+    }
+
+    public fun clone(): RawString = RawString(explicit, span)
+
+    public fun encode(buf: StringBuilder, input: String) {
+        val raw = toStr(input)
+        for (part in raw.split('\r')) {
+            buf.append(part)
+        }
+    }
+
+    public fun encodeWithDefault(buf: StringBuilder, input: String?, default: String) {
+        val raw = toStrWithDefault(input, default)
+        for (part in raw.split('\r')) {
+            buf.append(part)
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is RawString) return false
+        return explicit == other.explicit && span == other.span
+    }
+
+    override fun hashCode(): Int = (explicit?.hashCode() ?: 0) * 31 + (span?.hashCode() ?: 0)
+
+    override fun toString(): String = explicit ?: (span?.let { "span($it)" } ?: "")
 
     public companion object {
         public val EMPTY: RawString = RawString("")
