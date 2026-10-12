@@ -12,6 +12,26 @@ public class Repr(
     public val span: Span?
         get() = rawValue.span
 
+    public fun despan(input: String) {
+        rawValue.despan(input)
+    }
+
+    public fun clone(): Repr = Repr(rawValue.clone())
+
+    public fun encode(buf: StringBuilder, input: String) {
+        rawValue.encode(buf, input)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Repr) return false
+        return rawValue == other.rawValue
+    }
+
+    override fun hashCode(): Int = rawValue.hashCode()
+
+    override fun toString(): String = rawValue.toString()
+
     public companion object {
         public fun newUnchecked(raw: RawString): Repr = Repr(raw)
 
@@ -42,6 +62,41 @@ public class Decor(
     public fun setSuffix(suffix: RawString) {
         this.suffixValue = suffix
     }
+
+    public fun despan(input: String) {
+        prefixValue?.despan(input)
+        suffixValue?.despan(input)
+    }
+
+    public fun clone(): Decor = Decor(prefixValue?.clone(), suffixValue?.clone())
+
+    public fun prefixEncode(buf: StringBuilder, input: String?, default: String) {
+        val p = prefixValue
+        if (p != null) {
+            p.encodeWithDefault(buf, input, default)
+        } else {
+            buf.append(default)
+        }
+    }
+
+    public fun suffixEncode(buf: StringBuilder, input: String?, default: String) {
+        val s = suffixValue
+        if (s != null) {
+            s.encodeWithDefault(buf, input, default)
+        } else {
+            buf.append(default)
+        }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Decor) return false
+        return prefixValue == other.prefixValue && suffixValue == other.suffixValue
+    }
+
+    override fun hashCode(): Int = (prefixValue?.hashCode() ?: 0) * 31 + (suffixValue?.hashCode() ?: 0)
+
+    override fun toString(): String = "Decor(prefix=$prefixValue, suffix=$suffixValue)"
 
     public companion object {
         public fun new(
