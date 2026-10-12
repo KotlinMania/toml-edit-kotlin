@@ -37,23 +37,39 @@ public sealed class Item {
 
     public open fun makeValue(): Value =
         when (this) {
-            is ValueItem -> value
+            is ValueItem -> {
+                value
+            }
+
             is TableItem -> {
                 val inline = table.intoInlineTable()
                 Value.InlineTableValue(inline)
             }
+
             is ArrayOfTablesItem -> {
                 val arr = arrayOfTables.intoArray()
                 Value.ArrayValue(arr)
             }
-            is None -> Value.from("")
+
+            is None -> {
+                Value.from("")
+            }
         }
 
     public open fun fmt() {
         when (this) {
-            is ValueItem -> value.fmt()
-            is TableItem -> table.fmt()
-            is ArrayOfTablesItem -> arrayOfTables.fmt()
+            is ValueItem -> {
+                value.fmt()
+            }
+
+            is TableItem -> {
+                table.fmt()
+            }
+
+            is ArrayOfTablesItem -> {
+                arrayOfTables.fmt()
+            }
+
             is None -> {}
         }
     }
@@ -69,9 +85,18 @@ public sealed class Item {
 
     public open fun despan(input: String) {
         when (this) {
-            is ValueItem -> value.despan(input)
-            is TableItem -> table.despan(input)
-            is ArrayOfTablesItem -> arrayOfTables.despan(input)
+            is ValueItem -> {
+                value.despan(input)
+            }
+
+            is TableItem -> {
+                table.despan(input)
+            }
+
+            is ArrayOfTablesItem -> {
+                arrayOfTables.despan(input)
+            }
+
             is None -> {}
         }
     }

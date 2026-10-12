@@ -28,7 +28,10 @@ public class InlineTable public constructor(
 
     public fun despan(input: String) {
         this.span = null
+        this.decor.despan(input)
+        this.trailing.despan(input)
         for ((key, value) in items) {
+            key.despan(input)
             value.despan(input)
         }
     }

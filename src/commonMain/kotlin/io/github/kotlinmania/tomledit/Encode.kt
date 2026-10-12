@@ -21,7 +21,10 @@ public fun Value.toTomlString(): String {
 
 public fun Item.toTomlString(): String =
     when (this) {
-        is Item.ValueItem -> value.toTomlString()
+        is Item.ValueItem -> {
+            value.toTomlString()
+        }
+
         is Item.TableItem -> {
             val doc = Document.new()
             doc.asTable()?.let { t ->
@@ -31,7 +34,10 @@ public fun Item.toTomlString(): String =
             }
             doc.toTomlString()
         }
-        else -> ""
+
+        else -> {
+            ""
+        }
     }
 
 public fun encodeDocument(document: Document, buf: StringBuilder) {
@@ -81,6 +87,7 @@ private fun visitNestedTables(
                 visitNestedTables(value.table, path, false, callback)
                 path.removeAt(path.size - 1)
             }
+
             value is Item.ArrayOfTablesItem -> {
                 for (t in value.arrayOfTables.iter()) {
                     path.add(key)
@@ -165,6 +172,7 @@ public fun encodeValue(value: Value, buf: StringBuilder) {
                 buf.append("\"")
             }
         }
+
         is Value.IntegerValue -> {
             val repr = value.formatted.repr
             if (repr != null) {
@@ -173,6 +181,7 @@ public fun encodeValue(value: Value, buf: StringBuilder) {
                 buf.append(value.formatted.value.toString())
             }
         }
+
         is Value.FloatValue -> {
             val repr = value.formatted.repr
             if (repr != null) {
@@ -181,6 +190,7 @@ public fun encodeValue(value: Value, buf: StringBuilder) {
                 buf.append(value.formatted.value.toString())
             }
         }
+
         is Value.BooleanValue -> {
             val repr = value.formatted.repr
             if (repr != null) {
@@ -189,12 +199,15 @@ public fun encodeValue(value: Value, buf: StringBuilder) {
                 buf.append(if (value.formatted.value) "true" else "false")
             }
         }
+
         is Value.DatetimeValue -> {
             buf.append(value.formatted.value)
         }
+
         is Value.ArrayValue -> {
             encodeArray(value.array, buf)
         }
+
         is Value.InlineTableValue -> {
             encodeInlineTable(value.inlineTable, buf)
         }
@@ -237,13 +250,34 @@ private fun escapeString(s: String): String {
     val sb = StringBuilder()
     for (c in s) {
         when (c) {
-            '\\' -> sb.append("\\\\")
-            '"' -> sb.append("\\\"")
-            '\b' -> sb.append("\\b")
-            '\u000C' -> sb.append("\\f")
-            '\n' -> sb.append("\\n")
-            '\r' -> sb.append("\\r")
-            '\t' -> sb.append("\\t")
+            '\\' -> {
+                sb.append("\\\\")
+            }
+
+            '"' -> {
+                sb.append("\\\"")
+            }
+
+            '\b' -> {
+                sb.append("\\b")
+            }
+
+            '\u000C' -> {
+                sb.append("\\f")
+            }
+
+            '\n' -> {
+                sb.append("\\n")
+            }
+
+            '\r' -> {
+                sb.append("\\r")
+            }
+
+            '\t' -> {
+                sb.append("\\t")
+            }
+
             else -> {
                 if (c.code < 0x20 || c.code == 0x7F) {
                     sb.append("\\u").append(c.code.toString(16).padStart(4, '0'))

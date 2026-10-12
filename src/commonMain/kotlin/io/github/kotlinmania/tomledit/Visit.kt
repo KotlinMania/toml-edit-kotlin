@@ -15,9 +15,18 @@ public interface Visit {
     public fun visitItem(node: Item) {
         when (node) {
             is Item.None -> {}
-            is Item.ValueItem -> visitValue(node.value)
-            is Item.TableItem -> visitTable(node.table)
-            is Item.ArrayOfTablesItem -> visitArrayOfTables(node.arrayOfTables)
+
+            is Item.ValueItem -> {
+                visitValue(node.value)
+            }
+
+            is Item.TableItem -> {
+                visitTable(node.table)
+            }
+
+            is Item.ArrayOfTablesItem -> {
+                visitArrayOfTables(node.arrayOfTables)
+            }
         }
     }
 
